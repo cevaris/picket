@@ -5,22 +5,25 @@ import akka.actor._
 import com.cevaris.picket._
 
 object WikiApp {
+
+  val DATA_FILE = "/data/wiki/enwiki-20150205-pages-meta-current27.xml"
+
+
   def main(args: Array[String]) {
     println("picket - wiki")
 
     val system = ActorSystem("WikiApp")
 
     val printer = system.actorOf(
-      Props[WikiPrinter],
+      Props(new WikiPrinter(new Printer(), None)),
       name="WikiPrinter"
     )
 
     val reader = system.actorOf(
-      Props(new WikiReader(printer)),
+      Props(new WikiReader(WikiPageReader(DATA_FILE), Some(printer))),
       name="WikiReader"
     )
 
-    val file = "/data/wiki/enwiki-20150205-pages-meta-current27.xml"
-    reader ! ReadWikiXML(file)
+    reader ! ReadFile
   }
 }

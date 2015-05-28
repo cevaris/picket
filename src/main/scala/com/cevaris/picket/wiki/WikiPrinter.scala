@@ -1,15 +1,23 @@
 package com.cevaris.picket.wiki
 
 import akka.actor._
+import com.typesafe.scalalogging.LazyLogging
 
-import com.cevaris.picket.Transformation
+import com.cevaris.picket._
 
 
-class WikiPrinter extends Actor with Transformation {
+case class Printer() extends Transformation with LazyLogging {
+  def process(s: String): String = {
+    logger.debug(s"Printing: ${s}")
+    s
+  }
+}
+
+class WikiPrinter(t: Transformation, next: Option[ActorRef]) extends Actor {
 
   def receive = {
-    case Print(value: String) =>
-      println(s"Printing: $value")
+    case Transform(value: String) =>
+      t.process(value)
   }
 
 }

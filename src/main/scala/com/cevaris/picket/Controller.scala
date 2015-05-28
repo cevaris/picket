@@ -1,17 +1,5 @@
 package com.cevaris.picket
 
-import akka.actor._
-import akka.event.Logging
-
-// case class  StartupMessage(value: Int)
-// case object ShutdownMessage
-
-
-// class Controller(source: ActorRef) extends Actor with ActorLogging {
-
-//   def receive = {
-//     case ShutdownMessage =>
-//       context.system.shutdown
-//   }
-
-// }
+trait Message
+case class ReadFile(path: String) extends Message
+case class Transform(value: String) extends Message
